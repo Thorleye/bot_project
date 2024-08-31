@@ -2,8 +2,6 @@ import booking.constants as const
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 class Booking(webdriver.Chrome):
     def __init__(self, teardown=False):
@@ -37,7 +35,20 @@ class Booking(webdriver.Chrome):
         self.find_element(By.CSS_SELECTOR, f'span[data-date="{check_in}"]').click()
         self.find_element(By.CSS_SELECTOR, f'span[data-date="{check_out}"]').click()
 
-    def select_adults(self):
+    def select_adults(self, adult_target_count):
         self.find_element(By.CLASS_NAME, "a6391e882c").click()
-        self.find_element(By.XPATH, '//*[@id=":ri:"]/div/div[1]/div[2]/button[1]').click() #adult -1
+        minus_one_adult = self.find_element(By.XPATH, '//*[@id=":ri:"]/div/div[1]/div[2]/button[1]') #adult -1
+        plus_one_adult = self.find_element(By.XPATH, '//*[@id=":ri:"]/div/div[1]/div[2]/button[2]')
+
+        if adult_target_count == 1:
+            minus_one_adult.click()
+        #2 is default - pass on 2
+        elif adult_target_count > 2:
+            for _ in range(adult_target_count -2 ):
+                plus_one_adult.click()
+           
         self.find_element(By.XPATH, '//*[@id=":ri:"]/button').click() #done button
+
+    
+    def click_search_button(self):
+        self.find_element(By.XPATH, '//*[@id="indexsearch"]/div[2]/div/form/div[1]/div[4]/button/span').click()
