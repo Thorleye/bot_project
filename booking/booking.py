@@ -21,16 +21,17 @@ class Booking(webdriver.Chrome):
     def landing_page(self):
         self.get(const.BASE_URL)
 
+    def close_popup(self):
+        try:
+            self.find_element(By.CSS_SELECTOR, 'button[aria-label="Dismiss sign-in info."]').click()
+        except:
+            pass
+    
     def click_currency(self):
         currency_button = self.find_element(By.CSS_SELECTOR, 'button[data-testid="header-currency-picker-trigger"]')
         currency_button.click()
 
     def change_currency(self, currency):
-        try:            
-            self.find_element(By.CSS_SELECTOR, 'button[aria-label="Dismiss sign-in info."]').click()
-            self.find_element(By.CSS_SELECTOR, 'button[data-testid="header-currency-picker-trigger"]').click()
-        except:
-            pass
         selected_currency_element =  f'//div[text()="{currency}"]'
         self.find_element(By.XPATH, selected_currency_element).click()  
 
@@ -82,16 +83,8 @@ class Booking(webdriver.Chrome):
         
     def report_results(self):
         report = Report(self)
-        print(report.pull_attributes())
-        #print(results.pull_ratings())
-        #print(results.pull_prices())
-
-        #l = report.results
-        #for i in l:
-        #    print(i.__getattribute__("innerHTML"))
+        result_list = report.pull_attributes()
         
-        #hotel_info = self.find_elements(By.CSS_SELECTOR, 'div[data-testid="title"]')
-        #for title in hotel_info:
-        #    print(title.get_attribute("innerHTML"))
-        #report = Report(hotel_list)
-        #report.pull_title()
+        for hotel in result_list:
+            print(hotel[0] + "|  " + hotel[1] + "|  " + hotel[2])
+            print("-------------------------------------------------")

@@ -15,7 +15,7 @@ class Report:
         for hotel in self.hotels:
             title = hotel.find_element(By.CSS_SELECTOR, 'div[data-testid="title"]').get_attribute('innerHTML')
             price = hotel.find_element(By.CSS_SELECTOR, 'span[data-testid="price-and-discounted-price"]').get_attribute('innerHTML')
-            price= price[:3]+' '+price[9:]
+            #price= price[3]+' '+price[9:]
             rating = hotel.find_element(By.CSS_SELECTOR, 'div[data-testid="review-score"]').get_attribute('innerHTML')
             rating=rating[66:69]
             info.append([title, price, rating])
